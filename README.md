@@ -53,12 +53,12 @@ Agora você pode interagir com o sistema.
 ### Criar um Evento
 1. Escolha a opção 1.
 2. Digite o nome do evento.
-3. Informe a data no formato YYYY-MM-DD.
+3. Informe a data no formato ANO-MÊS-DIA.
 4. O sistema confirmará a criação.
 
 ### Listar Eventos
 1. Escolha a opção 2.
-2. O sistema exibirá os eventos no formato DD-MM-YYYY.
+2. O sistema exibirá os eventos no formato ANO-MÊS-DIA.
 
 ### Registrar um Participante
 1. Escolha a opção 3.

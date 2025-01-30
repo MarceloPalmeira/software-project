@@ -7,6 +7,11 @@ def create_event(name, date):
     response = requests.post(f"{BASE_URL}/create_event", data={"name": name, "date": date})
     return response.json()
 
+def edit_event(event_id, name, date):
+    #edita um evento existente
+    response = requests.put(f"{BASE_URL}/edit_event", data={"event_id": event_id, "name": name, "date": date})
+    return response.json()
+
 def get_events():
     #lista eventos cadastrados
     response = requests.get(f"{BASE_URL}/")

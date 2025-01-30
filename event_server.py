@@ -37,6 +37,27 @@ def create_event():
 
     return jsonify({"message": "Evento criado com sucesso", "event": event})
 
+@app.route("/edit_event", methods=["PUT"])
+def edit_event():
+    """Edita um evento existente"""
+    event_id = request.form.get("event_id")
+    name = request.form.get("name")
+    date = request.form.get("date")
+
+    if not event_id or not name or not date:
+        return jsonify({"error": "ID, nome e data são obrigatórios"}), 400
+
+    event_id = int(event_id)
+    if event_id > len(events) or event_id <= 0:
+        return jsonify({"error": "Evento não encontrado"}), 404
+
+    event = events[event_id - 1]
+    event["name"] = name
+    event["date"] = date
+
+    return jsonify({"message": "Evento editado com sucesso", "event": event})
+
+
 @app.route("/register", methods=["POST"])
 def register_attendee():
     """Registra um participante em um evento"""

@@ -1,4 +1,4 @@
-from event_client import create_event, get_events, register_attendee, get_attendees, edit_event
+from event_client import create_event, get_events, register_attendee, get_attendees, edit_event, register_speaker_or_performer, edit_speaker_or_performer, get_speakers_or_performers
 
 def main():
 
@@ -6,12 +6,11 @@ def main():
         print("\n===== MENU =====")
         print("1. Event Creation and Management") #Ok
         print("2. Attendee Registration")   #Ok
-        print ("3. Schedule and Agenda Management")
-        print("4 Speaker and Performer Profiles Management")
-        print("5. Vendor Management")
-        print("6. Feedback and Survey Tools") 
-        print("7. Budget and Financial Management")
-        print ("8. Quit") #Ok
+        print ("3. Speaker and Performer Profiles Management")#Ok
+        print("4. Vendor Management")
+        print("5. Feedback and Survey Tools") 
+        print("6. Budget and Financial Management")
+        print ("7. Quit") #Ok
 
         opcao = input("Escolha uma opção: ")
 
@@ -72,24 +71,64 @@ def main():
                 event_id = input("ID do evento: ")
                 print(register_attendee(name, event_id))
 
+
+        elif opcao == "3":
+            print("\n===== SUBMENU =====")
+            print("\nHello Speaker/Performer! Please introduce yourself:")
+            print("1. Create Profile")
+            print("2. Edit Profile")
+            print("3. List Profiles")
+            print("4. Return")
+
+            opt_2 = input("Choose an option: ")
+
+            if opt_2 == "1":
+                print("Create Profile")
+                speaker_name = input("Nome do palestrante/artista: ")
+                event_id = input("ID do evento: ")
+                description = input("Breve descrição do palestrante/artista: ")
+                print(register_speaker_or_performer(speaker_name, event_id, description))
+
+            elif opt_2 == "2":
+                print("Edit Profile")
+                event_id = input("ID do evento: ")
+                old_name = input("Nome atual do palestrante/artista: ")
+                new_name = input("Novo nome do palestrante/artista (pressione Enter para manter o mesmo): ")
+                new_description = input("Nova descrição do palestrante/artista (pressione Enter para manter a mesma): ")
+
+                new_name = new_name if new_name else None
+                new_description = new_description if new_description else None
+
+                print(edit_speaker_or_performer(event_id, old_name, new_name, new_description))
+
+            elif opt_2 == "3":
+                print("\nPalestrantes e Artistas registrados:")
+                speakers = get_speakers_or_performers()
+                if not speakers:
+                    print("Nenhum palestrante/artista registrado.")
+                else:
+                    for event_id, speaker_list in speakers.items():
+                        print(f"\nEvento ID {event_id}:")
+                        for speaker in speaker_list:
+                            print(f" - {speaker['name']}: {speaker['description']}")
+
+            elif opt_2 == "4":
+                print("Return")
+            else:
+                print("Invalid option!") 
+
                         ############################################################################################
                         ####################PAREI AQUI##############################################################
                         ############################################################################################
 
-
-        elif opcao == "3":
-            print ("")
-
         elif opcao == "4":
-            print("\nParticipantes registrados:")
-            participantes = get_attendees()
-            if not participantes:
-                print("Nenhum participante registrado.")
-            else:
-                for event_id, names in participantes.items():
-                    print(f"Evento ID {event_id}: {', '.join(names)}")
-
-        elif opcao == "8":
+            #Gerenciamento de equipamentos/produtos/serviços com fornecedores;
+            print("")
+        elif opcao == "5":
+            print("")
+        elif opcao == "6":
+            print("")
+        elif opcao == "7":
             print("Saindo...")
             break
 

@@ -1,139 +1,156 @@
-from event_client import create_event, get_events, register_attendee, get_attendees, edit_event, register_speaker_or_performer, edit_speaker_or_performer, get_speakers_or_performers
+from event_client import create_event, get_events, register_attendee, get_attendees, edit_event, register_speaker_or_performer, get_speakers_or_performers, register_vendor, get_vendors, get_budget, get_feedback, submit_feedback, update_budget
 
 def main():
-
     while True:
         print("\n===== MENU =====")
-        print("1. Event Creation and Management") #Ok
-        print("2. Attendee Registration")   #Ok
-        print ("3. Speaker and Performer Profiles Management")#Ok
+        print("1. Event Creation and Management")
+        print("2. Attendee Registration")
+        print("3. Speaker and Performer Management")
         print("4. Vendor Management")
-        print("5. Feedback and Survey Tools") 
+        print("5. Feedback and Survey Tools")
         print("6. Budget and Financial Management")
-        print ("7. Quit") #Ok
+        print("7. Quit")
 
-        opcao = input("Escolha uma opção: ")
+        option = input("Choose an option: ")
 
-    ############################################################################################
-    ############################################################################################
-    ############################################################################################
+        if option == "1":
+            print("\n===== EVENT MANAGEMENT =====")
+            print("1. Create Event")
+            print("2. Edit Event")
+            print("3. List Events")
+            print("4. List Registered Attendees")
+            print("5. Back")
 
-        if opcao == "1":
-            print("\n===== SUBMENU =====")
-            print("1. Criar evento")
-            print("2. Editar evento")
-            print("3. Listar eventos")
-            print("4. Listar participantes registrados")
-            print("5. Voltar")
+            sub_option = input("Choose an option: ")
 
-            opt_1 = input("Escolha uma opção: ")
-
-            if opt_1 == "1":
-                # Criação de evento
-                name = input("Nome do evento: ")
-                date = input("Data do evento (ANO-MÊS-DIA): ")
+            if sub_option == "1":
+                name = input("Event Name: ")
+                date = input("Event Date (YYYY-MM-DD): ")
                 print(create_event(name, date))
 
-            elif opt_1 == "2":
-                # Edição de evento
-                event_id = input("ID do evento: ")
-                name = input("Novo nome do evento: ")
-                date = input("Nova data do evento (ANO-MÊS-DIA): ")
+            elif sub_option == "2":
+                event_id = input("Event ID: ")
+                name = input("New Event Name: ")
+                date = input("New Event Date (YYYY-MM-DD): ")
                 print(edit_event(event_id, name, date))
 
-            elif opt_1 == "3":
-                print("\nEventos cadastrados:")
-                eventos = get_events()
-                if not eventos:
-                    print("Nenhum evento cadastrado.")
+            elif sub_option == "3":
+                print("\nRegistered Events:")
+                events = get_events()
+                if not events:
+                    print("No events registered.")
                 else:
-                    for event in eventos:
-                        print(f"ID: {event['id']}, Nome: {event['name']}, "
-                            f"Data: {event['date']}, Participantes: {event['attendees']}")
+                    for event in events["events"]:
+                        print(f"ID: {event['id']}, Name: {event['name']}, Date: {event['date']}, Attendees: {event['attendees']}")
 
-            elif opt_1 ==  "4": 
-                print("\nParticipantes registrados:")
-                participantes = get_attendees()
-                if not participantes:
-                    print("Nenhum participante registrado.")
+            elif sub_option == "4":
+                print("\nRegistered Attendees:")
+                attendees = get_attendees()
+                if not attendees:
+                    print("No attendees registered.")
                 else:
-                    for event_id, names in participantes.items():
-                        print(f"Evento ID {event_id}: {', '.join(names)}")
+                    for event_id, names in attendees.items():
+                        print(f"Event ID {event_id}: {', '.join(names)}")
 
-            elif opt_1 == "5":
-                print("Voltando ao menu principal...")
-            else:
-                print("Opção inválida!")
+        elif option == "2":
+            name = input("Attendee Name: ")
+            event_id = input("Event ID: ")
+            print(register_attendee(name, event_id))
 
-        elif opcao == "2":
-                # Registrar participante (em um evento específico)
-                name = input("Nome do participante: ")
-                event_id = input("ID do evento: ")
-                print(register_attendee(name, event_id))
+        elif option == "3":
+            print("\n===== SPEAKER/PERFORMER MANAGEMENT =====")
+            print("1. Register Speaker/Performer")
+            print("2. List Speakers/Performers")
+            print("3. Back")
 
+            sub_option = input("Choose an option: ")
 
-        elif opcao == "3":
-            print("\n===== SUBMENU =====")
-            print("\nHello Speaker/Performer! Please introduce yourself:")
-            print("1. Create Profile")
-            print("2. Edit Profile")
-            print("3. List Profiles")
-            print("4. Return")
-
-            opt_2 = input("Choose an option: ")
-
-            if opt_2 == "1":
-                print("Create Profile")
-                speaker_name = input("Nome do palestrante/artista: ")
-                event_id = input("ID do evento: ")
-                description = input("Breve descrição do palestrante/artista: ")
+            if sub_option == "1":
+                speaker_name = input("Speaker/Performer Name: ")
+                event_id = input("Event ID: ")
+                description = input("Short Description: ")
                 print(register_speaker_or_performer(speaker_name, event_id, description))
 
-            elif opt_2 == "2":
-                print("Edit Profile")
-                event_id = input("ID do evento: ")
-                old_name = input("Nome atual do palestrante/artista: ")
-                new_name = input("Novo nome do palestrante/artista (pressione Enter para manter o mesmo): ")
-                new_description = input("Nova descrição do palestrante/artista (pressione Enter para manter a mesma): ")
-
-                new_name = new_name if new_name else None
-                new_description = new_description if new_description else None
-
-                print(edit_speaker_or_performer(event_id, old_name, new_name, new_description))
-
-            elif opt_2 == "3":
-                print("\nPalestrantes e Artistas registrados:")
+            elif sub_option == "2":
+                print("\nRegistered Speakers/Performers:")
                 speakers = get_speakers_or_performers()
                 if not speakers:
-                    print("Nenhum palestrante/artista registrado.")
+                    print("No speakers/performers registered.")
                 else:
                     for event_id, speaker_list in speakers.items():
-                        print(f"\nEvento ID {event_id}:")
+                        print(f"\nEvent ID {event_id}:")
                         for speaker in speaker_list:
                             print(f" - {speaker['name']}: {speaker['description']}")
 
-            elif opt_2 == "4":
-                print("Return")
-            else:
-                print("Invalid option!") 
+        elif option == "4":
+            print("\n===== VENDOR MANAGEMENT =====")
+            print("1. Register Vendor")
+            print("2. List Vendors")
+            print("3. Back")
 
-                        ############################################################################################
-                        ####################PAREI AQUI##############################################################
-                        ############################################################################################
+            sub_option = input("Choose an option: ")
 
-        elif opcao == "4":
-            #Gerenciamento de equipamentos/produtos/serviços com fornecedores;
-            print("")
-        elif opcao == "5":
-            print("")
-        elif opcao == "6":
-            print("")
-        elif opcao == "7":
-            print("Saindo...")
+            if sub_option == "1":
+                name = input("Vendor Name: ")
+                products = input("Products/Services Offered (comma-separated): ")
+                print(register_vendor(name, products))
+
+            elif sub_option == "2":
+                print("\nRegistered Vendors:")
+                vendors = get_vendors()
+                if not vendors:
+                    print("No vendors registered.")
+                else:
+                    for name, products in vendors.items():
+                        print(f" - {name}: {', '.join(products)}")
+
+        elif option == "5":
+            print("\n===== FEEDBACK MANAGEMENT =====")
+            print("1. Submit Feedback")
+            print("2. List Feedback")
+            print("3. Back")
+
+            sub_option = input("Choose an option: ")
+
+            if sub_option == "1":
+                event_id = input("Event ID: ")
+                feedback = input("Enter your feedback: ")
+                print(submit_feedback(event_id, feedback))
+
+            elif sub_option == "2":
+                event_id = input("Event ID: ")
+                feedbacks = get_feedback(event_id)
+                if not feedbacks:
+                    print("No feedback found.")
+                else:
+                    print("\nFeedback:")
+                    for fb in feedbacks:
+                        print(f" - {fb}")
+
+        elif option == "6":
+            print("\n===== BUDGET MANAGEMENT =====")
+            print("1. Update Budget")
+            print("2. View Budget")
+            print("3. Back")
+
+            sub_option = input("Choose an option: ")
+
+            if sub_option == "1":
+                event_id = input("Event ID: ")
+                amount = input("Enter the new budget: ")
+                print(update_budget(event_id, amount))
+
+            elif sub_option == "2":
+                event_id = input("Event ID: ")
+                budget = get_budget(event_id)
+                print(f"Event Budget: {budget}")
+
+        elif option == "7":
+            print("Exiting...")
             break
 
         else:
-            print("Opção inválida!")
+            print("Invalid option!")
 
 if __name__ == "__main__":
     main()
